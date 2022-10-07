@@ -1,0 +1,14 @@
+## Interface: 90205
+## Interface-Classic: 11403
+## Interface-BCC: 20504
+## Interface-Wrath: 30400
+## X-Curse-Project-ID: 686613
+## Title: PetPet
+## Notes: Summon a random pet when you start moving.
+## URL: https://www.curseforge.com/wow/addons/petpet
+## Author: neurotech
+## Version: @project-version@
+## DefaultState: Enabled
+## LoadOnDemand: 0
+
+PetPet.lua
