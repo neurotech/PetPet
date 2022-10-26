@@ -10,5 +10,10 @@
 ## Version: @project-version@
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
+## SavedVariables: PetPetDB
 
+Elements\embeds.xml
+PetPet_Globals.lua
+PetPet_CompanionList.lua
+PetPet_Config.lua
 PetPet.lua
