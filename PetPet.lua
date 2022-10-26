@@ -44,6 +44,7 @@ local function InitialisePetPet()
         and not FindAura("player", 199483, "HELPFUL") -- Camouflage
         and not FindAura("player", 32612, "HELPFUL") -- Invisibility
         and not FindAura("player", 110960, "HELPFUL") -- Greater Invisibility
+        and GetNumCompanions("CRITTER") > 0 -- Player has at least 1 pet in their Companions list
 
     if PetPet_ActivePet == -1 then
       if canSummon then
