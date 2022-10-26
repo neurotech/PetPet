@@ -276,20 +276,13 @@ PetPet.CompanionList.Create = function(parent, anchorPoint)
   clearButton:SetScript("OnClick", function()
     PetPetDB["FAVOURITE_PETS"] = {}
 
-    for i = 1, GetNumCompanions("CRITTER") do
-      local petID = GetCompanionInfo("CRITTER", i)
-      local petFrame = _G["PETPET_COMPANION_LIST_PET_" .. petID]
+    for i = 1, PetPetDB["PAGE_SIZE"] do
+      local petFrame = _G["PETPET_COMPANION_LIST_PET_" .. i]
       if petFrame then
-        local petIcon = _G["PETPET_COMPANION_LIST_PET_ICON_FRAME_" .. petID]
-        local petNameText = _G["PETPET_COMPANION_LIST_PET_NAME_" .. petID]
+        local petIcon = _G["PETPET_COMPANION_LIST_PET_ICON_FRAME_" .. i]
+        local petNameText = _G["PETPET_COMPANION_LIST_PET_NAME_" .. i]
         RemoveFavouriteStyle(petIcon, petFrame, petNameText)
       end
     end
   end)
-
-
-  -- local modelFrame = CreateFrame("PlayerModel", "3D_SHIT", listFrame)
-  -- modelFrame:SetCreature(GetCompanionInfo("CRITTER", 1))
-  -- modelFrame:SetSize(200, 200)
-  -- modelFrame:SetPoint("CENTER", listFrame)
 end
