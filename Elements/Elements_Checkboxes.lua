@@ -41,9 +41,9 @@ Elements.Checkboxes.Create = function(labelText, parent, anchorPoint, relativePo
   checkbox:SetBackdropBorderColor(unpack(Elements.Palette.RGB.BLACK))
   checkbox:SetCheckedTexture(Elements.Textures.BUTTON_BG_TEXTURE)
   checkbox:SetNormalTexture(Elements.Textures.BUTTON_BG_TEXTURE)
-  checkbox:SetHighlightTexture(nil)
-  checkbox:SetPushedTexture(nil)
-  checkbox:SetDisabledTexture(nil)
+  --checkbox:SetHighlightTexture(nil)
+  --checkbox:SetPushedTexture(nil)
+  --checkbox:SetDisabledTexture(nil)
 
   ApplyNormalTexture(checkbox)
   ApplyCheckedTexture(checkbox)
