@@ -46,6 +46,7 @@ local function InitialisePetPet()
         and not FindAura("player", 110960, "HELPFUL") -- Greater Invisibility
       	and not UnitChannelInfo("player") -- Gas Cloud
         and GetNumCompanions("CRITTER") > 0 -- Player has at least 1 pet in their Companions list
+        and PetPetDB["PETPET_ACIVE"] == true -- PetPet is enabled
 
     if PetPet_ActivePet == -1 then
       if canSummon then
