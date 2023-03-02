@@ -4,3 +4,5 @@ ignore:
   - "psd"
   - "dev.sh"
   - "package.json"
+  - ".vscode"
+  - ".github"
