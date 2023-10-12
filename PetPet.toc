@@ -1,7 +1,7 @@
 ## Interface: 90205
 ## Interface-Classic: 11403
 ## Interface-BCC: 20504
-## Interface-Wrath: 30401
+## Interface-Wrath: 30403
 ## X-Curse-Project-ID: 686613
 ## Title: |cff7873ffPet|r|cffffffffPet|r
 ## Notes: Summon a random pet when you start moving.
