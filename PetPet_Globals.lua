@@ -1,9 +1,6 @@
 PetPet = {}
 
 PetPet.FontPath = "Interface\\Addons\\PetPet\\Elements\\Fonts\\elements.ttf"
-PetPet.FavouriteIconPath = "Interface\\Addons\\PetPet\\Textures\\favourite-icon"
-
-PetPet.CompanionList = {}
 
 PetPet.Config = {}
 PetPet.Config.FrameName = "PetPetConfigFrame"
@@ -36,24 +33,15 @@ PetPet.GetVersionText = function()
   return Elements.Palette.Hex.LIGHT_GREY .. GetAddOnMetadata("PetPet", "Version") .. Elements.Palette.RESET
 end
 
-PetPet.TableContains = function(table, element)
-  for _, value in pairs(table) do
-    if value == element then
-      return true
-    end
-  end
+PetPet.GetMigrationText = function()
+  local icon = "|TInterface\\Icons\\spell_arcane_focusedpower:32|t ";
+  local heading = icon .. "Please note!";
 
-  return false
-end
+  local text = {}
+  table.insert(text,
+    "As of version 3.0.0, PetPet now uses the in-game Pet Journal to source it's list of favourite pets.")
+  table.insert(text,
+    "Please ensure you have your favourite pets set in the Pet Journal UI for PetPet to function correctly.")
 
-PetPet.GetItemPosition = function(table, item)
-  local position = -1
-
-  for index, value in pairs(table) do
-    if value == item then
-      position = index
-    end
-  end
-
-  return position
+  return heading, text
 end

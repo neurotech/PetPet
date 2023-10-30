@@ -1,7 +1,8 @@
 local function FindAura(unit, spellID, filter)
   for i = 1, 100 do
-    local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, auraSpellID = UnitAura(unit
-      , i, filter)
+    local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, auraSpellID =
+        UnitAura(unit
+        , i, filter)
     if not name then return nil end
     if spellID == auraSpellID then
       return name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge,
@@ -11,66 +12,58 @@ local function FindAura(unit, spellID, filter)
   end
 end
 
-local function InitialisePetPet()
-  local PetPet_ActivePet = -1
-  local PetPetListener = CreateFrame("Frame")
+local function HasActivePet(numPets)
+  local activePet = false
 
-  local function CheckSummonedPets()
-    local aPetIsSummoned = false;
-
-    for i = 1, GetNumCompanions("CRITTER") do
-      local _, _, _, _, isActive = GetCompanionInfo("CRITTER", i);
-
-      if isActive then
-        PetPet_ActivePet = i
-        aPetIsSummoned = true;
-      end
-    end
-
-    if not aPetIsSummoned then
-      PetPet_ActivePet = -1
+  for i = 1, numPets do
+    local _, _, _, _, isActive = GetCompanionInfo("CRITTER", i);
+    if isActive then
+      activePet = true
     end
   end
 
-  CheckSummonedPets()
+  return activePet;
+end
+
+local function InitialisePetPet()
+  local PetPetListener = CreateFrame("Frame")
 
   PetPetListener:RegisterEvent("PLAYER_STARTED_MOVING")
 
-  PetPetListener:SetScript("OnEvent", function(self, event, ...)
+  PetPetListener:SetScript("OnEvent", function()
+    local favouritePets = {}
+    local numPets, numOwned = C_PetJournal.GetNumPets()
     local canSummon = not UnitAffectingCombat("player")
         and not IsMounted() and not IsFlying() and not UnitHasVehicleUI("player")
-        and not (UnitIsControlling("player") and UnitChannelInfo("player")) -- If player is mind-controlling
+        -- If player is mind-controlling:
+        and not (UnitIsControlling("player") and UnitChannelInfo("player"))
         and not IsStealthed() and not UnitIsGhost("player")
-        and not FindAura("player", 199483, "HELPFUL") -- Camouflage
-        and not FindAura("player", 32612, "HELPFUL") -- Invisibility
-        and not FindAura("player", 110960, "HELPFUL") -- Greater Invisibility
-      	and not UnitChannelInfo("player") -- Gas Cloud
-        and GetNumCompanions("CRITTER") > 0 -- Player has at least 1 pet in their Companions list
-        and PetPetDB["PETPET_ACIVE"] == true -- PetPet is enabled
+        -- Camouflage:
+        and not FindAura("player", 199483, "HELPFUL")
+        -- Invisibility:
+        and not FindAura("player", 32612, "HELPFUL")
+        -- Greater Invisibility:
+        and not FindAura("player", 110960, "HELPFUL")
+        -- Gas Cloud:
+        and not UnitChannelInfo("player")
+        and not HasActivePet(numPets)
+        -- Player has at least 1 pet in their Companions list:
+        and numOwned > 0
+        -- PetPet is enabled:
+        and PetPetDB["PETPET_ACIVE"] == true
 
-    if PetPet_ActivePet == -1 then
-      if canSummon then
-        local petID
+    if canSummon then
+      for i = 1, numPets do
+        local petID, _, owned, _, _, favorite, _, _ = C_PetJournal.GetPetInfoByIndex(i);
 
-        if #PetPetDB["FAVOURITE_PETS"] > 0 then
-          local index = math.random(#PetPetDB["FAVOURITE_PETS"])
-          local randomFavouritePet = PetPetDB["FAVOURITE_PETS"][index]
-
-          for i = 1, GetNumCompanions("CRITTER") do
-            local id = GetCompanionInfo("CRITTER", i);
-            if randomFavouritePet == id then
-              petID = i
-            end
-          end
-        else
-          petID = math.random(GetNumCompanions("CRITTER"))
+        if owned and favorite then
+          table.insert(favouritePets, tostring(petID))
         end
-
-        CallCompanion("CRITTER", petID)
-        PetPet_ActivePet = petID
       end
-    else
-      CheckSummonedPets()
+
+      if #favouritePets > 0 then
+        C_PetJournal.SummonPetByGUID(favouritePets[math.random(#favouritePets)])
+      end
     end
   end)
 end
@@ -91,12 +84,18 @@ loadingEvents:SetScript(
         PetPetDB["PETPET_ACIVE"] = false
       end
 
-      if PetPetDB["FAVOURITE_PETS"] == nil then
-        PetPetDB["FAVOURITE_PETS"] = {}
+      -- Clean up old config settings:
+      if PetPetDB["FAVOURITE_PETS"] then
+        PetPetDB["FAVOURITE_PETS"] = nil
       end
 
-      PetPetDB["PAGE_SIZE"] = 6
-      PetPetDB["CURRENT_PAGE"] = 1
+      if PetPetDB["PAGE_SIZE"] then
+        PetPetDB["PAGE_SIZE"] = nil
+      end
+
+      if PetPetDB["CURRENT_PAGE"] then
+        PetPetDB["CURRENT_PAGE"] = nil
+      end
 
       loadingEvents:UnregisterEvent("ADDON_LOADED")
     end

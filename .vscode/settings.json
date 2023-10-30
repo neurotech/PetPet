@@ -1,7 +1,25 @@
 {
-    "Lua.diagnostics.globals": [
-        "SlashCmdList",
-        "InterfaceOptionsFrame_OpenToCategory",
-        "InterfaceOptions_AddCategory"
-    ]
+  "Lua.diagnostics.globals": [
+    "SlashCmdList",
+    "InterfaceOptionsFrame_OpenToCategory",
+    "InterfaceOptions_AddCategory",
+    "CreateFrame",
+    "print",
+    "BackdropTemplateMixin",
+    "UnitAura",
+    "GetNumCompanions",
+    "GetCompanionInfo",
+    "UnitChannelInfo",
+    "C_PetJournal",
+    "tostring",
+    "UnitIsGhost",
+    "math",
+    "IsStealthed",
+    "UnitHasVehicleUI",
+    "IsFlying",
+    "UnitIsControlling",
+    "UnitAffectingCombat",
+    "IsMounted",
+    "ToggleCollectionsJournal"
+  ]
 }

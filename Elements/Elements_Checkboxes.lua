@@ -23,15 +23,17 @@ local function ApplyNormalTexture(checkbox)
   SetTextureInside(checkbox, checkBoxNormalTexture)
 end
 
-Elements.Checkboxes.Create = function(labelText, parent, anchorPoint, relativePoint)
+Elements.Checkboxes.Create = function(labelText, parent, anchorPoint, relativePoint, offsetX, fontPath)
   relativePoint = relativePoint or "BOTTOMLEFT"
+  offsetX = offsetX or Elements.Units.Padding * 1.5
+  fontPath = fontPath or nil
 
   local checkbox = CreateFrame("CheckButton", nil, parent, BackdropTemplateMixin and "BackdropTemplate")
   Elements.Utilities.SetPixelScaling(checkbox)
   local label = checkbox:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 
   checkbox:SetSize(Elements.Units.CheckboxWidth, Elements.Units.CheckboxHeight)
-  checkbox:SetPoint("TOPLEFT", anchorPoint, relativePoint, Elements.Units.Padding * 1.5, -Elements.Units.Padding)
+  checkbox:SetPoint("TOPLEFT", anchorPoint, relativePoint, offsetX, -Elements.Units.Padding)
   checkbox:SetBackdrop(
     {
       edgeFile = Elements.Textures.EDGE_TEXTURE,
@@ -47,6 +49,10 @@ Elements.Checkboxes.Create = function(labelText, parent, anchorPoint, relativePo
 
   label:SetPoint("LEFT", checkbox, "RIGHT", Elements.Units.Padding, 0)
   label:SetText(labelText)
+
+  if fontPath then
+    label:SetFont(fontPath, 12, "")
+  end
 
   return checkbox, label
 end
