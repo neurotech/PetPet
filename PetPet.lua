@@ -14,15 +14,26 @@ end
 
 local function HasActivePet(numPets)
   local activePet = false
+  local ownedPets = {}
 
   for i = 1, numPets do
-    local _, _, _, _, isActive = GetCompanionInfo("CRITTER", i);
-    if isActive then
+    local petID, _, owned, _, _, _, _, _ = C_PetJournal.GetPetInfoByIndex(i)
+
+    if owned then
+      table.insert(ownedPets, petID)
+    end
+  end
+
+  for i = 1, #ownedPets do
+    local petID = ownedPets[i]
+    local isSummoned = C_PetJournal.IsCurrentlySummoned(petID)
+
+    if isSummoned then
       activePet = true
     end
   end
 
-  return activePet;
+  return activePet
 end
 
 local function InitialisePetPet()
@@ -54,19 +65,10 @@ local function InitialisePetPet()
 
     if canSummon then
       for i = 1, numPets do
-        local petID, _, owned, _, _, favorite, _, _ = C_PetJournal.GetPetInfoByIndex(i);
+        local petID, _, owned, _, _, favorite, _, _ = C_PetJournal.GetPetInfoByIndex(i)
 
         if owned and favorite then
           table.insert(favouritePets, tostring(petID))
-        end
-      end
-
-      if PetPetDB["PETPET_DEBUG"] == true then
-        print("favouritePets (" .. #favouritePets .. "):")
-
-        for index, value in ipairs(favouritePets) do
-          local _, _, _, _, _, _, _, name, _, _, _, _, _, _, _, _, _, _ = C_PetJournal.GetPetInfoByPetID(value)
-          print(index .. ": " .. name .. " (" .. value .. ")")
         end
       end
 
@@ -106,6 +108,7 @@ loadingEvents:SetScript(
         PetPetDB["PETPET_ACTIVE"] = false
       end
 
+      -- Debug Mode
       if PetPetDB["PETPET_DEBUG"] == nil then
         PetPetDB["PETPET_DEBUG"] = false
       end

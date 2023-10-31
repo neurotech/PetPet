@@ -26,7 +26,7 @@ local function CreateSpriteScene(parent)
 end
 
 local function CreateAndAddFormElements(parent)
-  local migrationText = PetPet.GetMigrationText();
+  local migrationText = PetPet.GetMigrationText()
 
   -- Addon Name & Version
   local petpetHeading, _ = Elements.Text.CreateText(PetPet.FontPath, "PETPET_CONFIG_HEADING", parent
