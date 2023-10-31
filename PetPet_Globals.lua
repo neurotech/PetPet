@@ -34,14 +34,13 @@ PetPet.GetVersionText = function()
 end
 
 PetPet.GetMigrationText = function()
-  local icon = "|TInterface\\Icons\\spell_arcane_focusedpower:32|t ";
-  local heading = icon .. "Please note!";
-
   local text = {}
+
+  table.insert(text, "Please note!")
   table.insert(text,
     "As of version 3.0.0, PetPet now uses the in-game Pet Journal to source it's list of favourite pets.")
   table.insert(text,
     "Please ensure you have your favourite pets set in the Pet Journal UI for PetPet to function correctly.")
 
-  return heading, text
+  return text
 end

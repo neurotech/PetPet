@@ -26,7 +26,7 @@ local function CreateSpriteScene(parent)
 end
 
 local function CreateAndAddFormElements(parent)
-  local migrationHeading, migrationText = PetPet.GetMigrationText();
+  local migrationText = PetPet.GetMigrationText();
 
   -- Addon Name & Version
   local petpetHeading, _ = Elements.Text.CreateText(PetPet.FontPath, "PETPET_CONFIG_HEADING", parent
@@ -38,24 +38,15 @@ local function CreateAndAddFormElements(parent)
   local separator = Elements.Text.CreateSeparator("PETPET_CONFIG_HEADING_SEPARATOR", parent, petpetHeading, "BOTTOMLEFT")
 
   -- Migration Notice
-  local migrationHeadingText = Elements.Text.CreateText(
-    PetPet.FontPath,
-    "PETPET_CONFIG_MIGRATION_TEXT_HEADING",
-    parent,
-    separator,
-    "BOTTOMLEFT",
-    migrationHeading
-  )
-
   for index, value in ipairs(migrationText) do
     local anchor
     local offsetX
     local offsetY
 
     if index == 1 then
-      anchor = migrationHeadingText
+      anchor = separator
       offsetX = 10
-      offsetY = 10
+      offsetY = 0
     else
       anchor = _G["PETPET_CONFIG_MIGRATION_TEXT_" .. index - 1]
       offsetX = 0
@@ -79,7 +70,11 @@ local function CreateAndAddFormElements(parent)
   local togglePetPetCheckbox = Elements.Checkboxes.Create("Enable PetPet", parent,
     _G["PETPET_CONFIG_MIGRATION_TEXT_" .. #migrationText], "BOTTOMLEFT", 0, PetPet.FontPath)
 
-  return togglePetPetCheckbox
+  -- 'Debug' checkbox
+  local debugPetPetCheckbox = Elements.Checkboxes.Create("Debug Mode", parent, togglePetPetCheckbox, "BOTTOMLEFT", 0,
+    PetPet.FontPath)
+
+  return togglePetPetCheckbox, debugPetPetCheckbox
 end
 
 PetPet.Config.CreateConfigFrame = function()
@@ -95,18 +90,20 @@ PetPet.Config.CreateConfigFrame = function()
   configFrame.name = "PetPet"
 
   CreateSpriteScene(configFrame)
-  local togglePetPetCheckbox = CreateAndAddFormElements(configFrame)
+  local togglePetPetCheckbox, debugPetPetCheckbox = CreateAndAddFormElements(configFrame)
 
   InterfaceOptions_AddCategory(configFrame)
 
   configFrame:Hide()
 
   configFrame.OnCommit = function()
-    PetPetDB["PETPET_ACIVE"] = togglePetPetCheckbox:GetChecked()
+    PetPetDB["PETPET_ACTIVE"] = togglePetPetCheckbox:GetChecked()
+    PetPetDB["PETPET_DEBUG"] = debugPetPetCheckbox:GetChecked()
   end
 
   configFrame.OnRefresh = function()
-    togglePetPetCheckbox:SetChecked(PetPetDB["PETPET_ACIVE"])
+    togglePetPetCheckbox:SetChecked(PetPetDB["PETPET_ACTIVE"])
+    debugPetPetCheckbox:SetChecked(PetPetDB["PETPET_DEBUG"])
   end
 
   return configFrame

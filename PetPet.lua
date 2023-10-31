@@ -50,7 +50,7 @@ local function InitialisePetPet()
         -- Player has at least 1 pet in their Companions list:
         and numOwned > 0
         -- PetPet is enabled:
-        and PetPetDB["PETPET_ACIVE"] == true
+        and PetPetDB["PETPET_ACTIVE"] == true
 
     if canSummon then
       for i = 1, numPets do
@@ -58,6 +58,15 @@ local function InitialisePetPet()
 
         if owned and favorite then
           table.insert(favouritePets, tostring(petID))
+        end
+      end
+
+      if PetPetDB["PETPET_DEBUG"] == true then
+        print("favouritePets (" .. #favouritePets .. "):")
+
+        for index, value in ipairs(favouritePets) do
+          local _, _, _, _, _, _, _, name, _, _, _, _, _, _, _, _, _, _ = C_PetJournal.GetPetInfoByPetID(value)
+          print(index .. ": " .. name .. " (" .. value .. ")")
         end
       end
 
@@ -80,8 +89,25 @@ loadingEvents:SetScript(
         PetPetDB = {}
       end
 
-      if PetPetDB["PETPET_ACIVE"] == nil then
-        PetPetDB["PETPET_ACIVE"] = false
+      if PetPetDB["PETPET_ACTIVE"] == nil then
+        if PetPetDB["PETPET_ACIVE"] then
+          PetPetDB["PETPET_ACTIVE"] = PetPetDB["PETPET_ACIVE"]
+        else
+          PetPetDB["PETPET_ACTIVE"] = false
+        end
+      end
+
+      -- Fix spelling mistake
+      if PetPetDB["PETPET_ACIVE"] then
+        PetPetDB["PETPET_ACIVE"] = nil
+      end
+
+      if PetPetDB["PETPET_ACTIVE"] == nil then
+        PetPetDB["PETPET_ACTIVE"] = false
+      end
+
+      if PetPetDB["PETPET_DEBUG"] == nil then
+        PetPetDB["PETPET_DEBUG"] = false
       end
 
       -- Clean up old config settings:
