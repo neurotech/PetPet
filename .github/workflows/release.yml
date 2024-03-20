@@ -23,3 +23,8 @@ jobs:
         uses: BigWigsMods/packager@v2
         with:
           args: -m .pkgmeta -g wrath -w 0 -a 0
+
+      - name: Release for Cataclysm
+        uses: BigWigsMods/packager@v2
+        with:
+          args: -m .pkgmeta -g cata -w 0 -a 0
