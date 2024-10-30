@@ -38,7 +38,6 @@ end
 
 local function InitialisePetPet()
   local PetPetListener = CreateFrame("Frame")
-
   PetPetListener:RegisterEvent("PLAYER_STARTED_MOVING")
 
   PetPetListener:SetScript("OnEvent", function()
@@ -60,8 +59,6 @@ local function InitialisePetPet()
         and not HasActivePet(numPets)
         -- Player has at least 1 pet in their Companions list:
         and numOwned > 0
-        -- PetPet is enabled:
-        and PetPetDB["PETPET_ACTIVE"] == true
 
     if canSummon then
       for i = 1, numPets do
@@ -87,59 +84,17 @@ loadingEvents:SetScript(
   "OnEvent",
   function(_, event, arg1)
     if event == "ADDON_LOADED" and arg1 == "PetPet" then
-      if PetPetDB == nil then
-        PetPetDB = {}
-      end
-
-      if PetPetDB["PETPET_ACTIVE"] == nil then
-        if PetPetDB["PETPET_ACIVE"] then
-          PetPetDB["PETPET_ACTIVE"] = PetPetDB["PETPET_ACIVE"]
-        else
-          PetPetDB["PETPET_ACTIVE"] = false
-        end
-      end
-
-      -- Fix spelling mistake
-      if PetPetDB["PETPET_ACIVE"] then
-        PetPetDB["PETPET_ACIVE"] = nil
-      end
-
-      if PetPetDB["PETPET_ACTIVE"] == nil then
-        PetPetDB["PETPET_ACTIVE"] = false
-      end
-
-      -- Debug Mode
-      if PetPetDB["PETPET_DEBUG"] == nil then
-        PetPetDB["PETPET_DEBUG"] = false
-      end
-
       -- Clean up old config settings:
-      if PetPetDB["FAVOURITE_PETS"] then
-        PetPetDB["FAVOURITE_PETS"] = nil
-      end
-
-      if PetPetDB["PAGE_SIZE"] then
-        PetPetDB["PAGE_SIZE"] = nil
-      end
-
-      if PetPetDB["CURRENT_PAGE"] then
-        PetPetDB["CURRENT_PAGE"] = nil
+      if PetPetDB ~= nil then
+        PetPetDB = {}
       end
 
       loadingEvents:UnregisterEvent("ADDON_LOADED")
     end
 
     if event == "PLAYER_ENTERING_WORLD" then
-      PetPet.Config.CreateConfigFrame()
       InitialisePetPet()
       loadingEvents:UnregisterEvent("PLAYER_ENTERING_WORLD")
     end
   end
 )
-
-SLASH_PETPET1 = "/petpet"
-
-SlashCmdList["PETPET"] = function(_, _)
-  InterfaceOptionsFrame_OpenToCategory("PetPet")
-  InterfaceOptionsFrame_OpenToCategory("PetPet")
-end

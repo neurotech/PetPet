@@ -8,8 +8,6 @@ sed -i "s/@project-version@/$(git describe --abbrev=0)/g" PetPet.toc.tmp
 echo "Copying assets..."
 mkdir -p /f/games/World\ of\ Warcraft/_classic_ptr_/Interface/AddOns/PetPet/
 cp *.lua /f/games/World\ of\ Warcraft/_classic_ptr_/Interface/AddOns/PetPet/
-cp -r Textures /f/games/World\ of\ Warcraft/_classic_ptr_/Interface/AddOns/PetPet/
-cp -r Elements /f/games/World\ of\ Warcraft/_classic_ptr_/Interface/AddOns/PetPet/
 cp PetPet.toc.tmp /f/games/World\ of\ Warcraft/_classic_ptr_/Interface/AddOns/PetPet/PetPet.toc
 
 echo "Cleaning up..."
