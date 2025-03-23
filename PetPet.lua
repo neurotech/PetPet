@@ -10,6 +10,34 @@ local function FindAura(unit, spellID, filter)
   end
 end
 
+local function HasActivePet(numPets)
+  if C_PetJournal.IsCurrentlySummoned == nil then
+    return false
+  end
+
+  local activePet = false
+  local ownedPets = {}
+
+  for i = 1, numPets do
+    local petID, _, owned, _, _, _, _, _ = C_PetJournal.GetPetInfoByIndex(i)
+
+    if owned then
+      table.insert(ownedPets, petID)
+    end
+  end
+
+  for i = 1, #ownedPets do
+    local petID = ownedPets[i]
+    local isSummoned = C_PetJournal.IsCurrentlySummoned(petID)
+
+    if isSummoned then
+      activePet = true
+    end
+  end
+
+  return activePet
+end
+
 local function InitialisePetPet()
   local PetPetListener = CreateFrame("Frame")
   PetPetListener:RegisterEvent("PLAYER_STARTED_MOVING")
@@ -17,6 +45,8 @@ local function InitialisePetPet()
   PetPetListener:SetScript("OnEvent", function()
     local favouritePets = {}
     local numPets, numOwned = C_PetJournal.GetNumPets()
+    local petActive = HasActivePet(numPets) or C_PetJournal.GetSummonedPetGUID() ~= nil
+
     local canSummon = not UnitAffectingCombat("player")
         -- Mounted / Flying / In a vehicle:
         and not IsMounted() and not IsFlying() and not UnitHasVehicleUI("player")
@@ -33,7 +63,7 @@ local function InitialisePetPet()
         -- Gas Cloud:
         and not UnitChannelInfo("player")
         -- Does not have a pet summoned:
-        and not C_PetJournal.GetSummonedPetGUID()
+        and not petActive
         -- Has at least 1 pet in their Companions list:
         and numOwned > 0
 
