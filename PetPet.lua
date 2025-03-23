@@ -10,6 +10,30 @@ local function FindAura(unit, spellID, filter)
   end
 end
 
+local function HasActivePet(numPets)
+  local activePet = false
+  local ownedPets = {}
+
+  for i = 1, numPets do
+    local petID, _, owned, _, _, _, _, _ = C_PetJournal.GetPetInfoByIndex(i)
+
+    if owned then
+      table.insert(ownedPets, petID)
+    end
+  end
+
+  for i = 1, #ownedPets do
+    local petID = ownedPets[i]
+    local isSummoned = C_PetJournal.IsCurrentlySummoned(petID)
+
+    if isSummoned then
+      activePet = true
+    end
+  end
+
+  return activePet
+end
+
 local function InitialisePetPet()
   local PetPetListener = CreateFrame("Frame")
   PetPetListener:RegisterEvent("PLAYER_STARTED_MOVING")
@@ -17,6 +41,12 @@ local function InitialisePetPet()
   PetPetListener:SetScript("OnEvent", function()
     local favouritePets = {}
     local numPets, numOwned = C_PetJournal.GetNumPets()
+
+    -- DEBUG
+    print("HasActivePet(numPets):" .. HasActivePet(numPets))
+    print("C_PetJournal.GetSummonedPetGUID():" .. C_PetJournal.GetSummonedPetGUID())
+    -- DEBUG
+
     local canSummon = not UnitAffectingCombat("player")
         -- Mounted / Flying / In a vehicle:
         and not IsMounted() and not IsFlying() and not UnitHasVehicleUI("player")
