@@ -11,6 +11,10 @@ local function FindAura(unit, spellID, filter)
 end
 
 local function HasActivePet(numPets)
+  if C_PetJournal.IsCurrentlySummoned == nil then
+    return false
+  end
+
   local activePet = false
   local ownedPets = {}
 
@@ -41,6 +45,7 @@ local function InitialisePetPet()
   PetPetListener:SetScript("OnEvent", function()
     local favouritePets = {}
     local numPets, numOwned = C_PetJournal.GetNumPets()
+    local petActive = HasActivePet(numPets) or C_PetJournal.GetSummonedPetGUID() ~= nil
 
     -- DEBUG
     print("C_PetJournal.GetSummonedPetGUID(): " .. (C_PetJournal.GetSummonedPetGUID() or "nil"))
@@ -63,7 +68,7 @@ local function InitialisePetPet()
         -- Gas Cloud:
         and not UnitChannelInfo("player")
         -- Does not have a pet summoned:
-        and not C_PetJournal.GetSummonedPetGUID()
+        and not petActive
         -- Has at least 1 pet in their Companions list:
         and numOwned > 0
 
