@@ -10,6 +10,11 @@ mkdir -p /c/Program\ Files\ \(x86\)/World\ of\ Warcraft/_retail_/Interface/AddOn
 cp *.lua /c/Program\ Files\ \(x86\)/World\ of\ Warcraft/_retail_/Interface/AddOns/PetPet/
 cp PetPet.toc.tmp /c/Program\ Files\ \(x86\)/World\ of\ Warcraft/_retail_/Interface/AddOns/PetPet/PetPet.toc
 
+echo "Copying assets to Classic..."
+mkdir -p /c/Program\ Files\ \(x86\)/World\ of\ Warcraft/_classic_/Interface/AddOns/PetPet/
+cp *.lua /c/Program\ Files\ \(x86\)/World\ of\ Warcraft/_classic_/Interface/AddOns/PetPet/
+cp PetPet.toc.tmp /c/Program\ Files\ \(x86\)/World\ of\ Warcraft/_classic_/Interface/AddOns/PetPet/PetPet.toc
+
 echo "Copying assets to Classic PTR..."
 mkdir -p /c/Program\ Files\ \(x86\)/World\ of\ Warcraft/_classic_ptr_/Interface/AddOns/PetPet/
 cp *.lua /c/Program\ Files\ \(x86\)/World\ of\ Warcraft/_classic_ptr_/Interface/AddOns/PetPet/
