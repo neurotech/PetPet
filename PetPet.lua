@@ -43,7 +43,7 @@ local function InitialisePetPet()
     local numPets, numOwned = C_PetJournal.GetNumPets()
 
     -- DEBUG
-    print("HasActivePet(numPets):" .. HasActivePet(numPets))
+    print("HasActivePet(numPets):" .. tostring(HasActivePet(numPets)))
     print("C_PetJournal.GetSummonedPetGUID():" .. C_PetJournal.GetSummonedPetGUID())
     -- DEBUG
 
