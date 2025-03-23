@@ -47,11 +47,6 @@ local function InitialisePetPet()
     local numPets, numOwned = C_PetJournal.GetNumPets()
     local petActive = HasActivePet(numPets) or C_PetJournal.GetSummonedPetGUID() ~= nil
 
-    -- DEBUG
-    print("C_PetJournal.GetSummonedPetGUID(): " .. (C_PetJournal.GetSummonedPetGUID() or "nil"))
-    print("HasActivePet(numPets): " .. tostring(HasActivePet(numPets)))
-    -- DEBUG
-
     local canSummon = not UnitAffectingCombat("player")
         -- Mounted / Flying / In a vehicle:
         and not IsMounted() and not IsFlying() and not UnitHasVehicleUI("player")
