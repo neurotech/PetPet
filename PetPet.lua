@@ -38,7 +38,7 @@ local function InitialisePetPet()
 
   PetPetListener:SetScript("OnEvent", function(self, event, ...)
     local canSummon = not UnitAffectingCombat("player")
-        and not IsMounted() and not IsFlying() and not UnitHasVehicleUI("player")
+        and not IsFlying() and not UnitHasVehicleUI("player")
         and not (UnitIsControlling("player") and UnitChannelInfo("player")) -- If player is mind-controlling
         and not IsStealthed() and not UnitIsGhost("player")
         and not FindAura("player", 199483, "HELPFUL") -- Camouflage
