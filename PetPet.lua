@@ -38,6 +38,18 @@ local function HasActivePet(numPets)
   return activePet
 end
 
+local function MountedFlyingOrVehicle()
+  local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+  local isMoPClassic = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
+  local isFlyingOrVehicle = IsFlying("player") or UnitHasVehicleUI("player")
+
+  if isMoPClassic or isRetail then
+    return isFlyingOrVehicle
+  end
+
+  return IsMounted() or isFlyingOrVehicle
+end
+
 local function InitialisePetPet()
   local PetPetListener = CreateFrame("Frame")
   PetPetListener:RegisterEvent("PLAYER_STARTED_MOVING")
@@ -47,21 +59,21 @@ local function InitialisePetPet()
     local numPets, numOwned = C_PetJournal.GetNumPets()
     local petActive = HasActivePet(numPets) or C_PetJournal.GetSummonedPetGUID() ~= nil
 
+    -- Player is not:
+    -- In combat:
     local canSummon = not UnitAffectingCombat("player")
         -- Mounted / Flying / In a vehicle:
-        and not IsMounted() and not IsFlying() and not UnitHasVehicleUI("player")
-        -- If player is mind-controlling:
+        and not MountedFlyingOrVehicle()
+        -- Mind-controlling:
         and not (UnitIsControlling("player") and UnitChannelInfo("player"))
         -- Stealthed / Dead
         and not IsStealthed() and not UnitIsGhost("player")
-        -- Camouflage:
+        -- Camouflaged:
         and not FindAura("player", 199483, "HELPFUL")
-        -- Invisibility:
+        -- Has Invisibility:
         and not FindAura("player", 32612, "HELPFUL")
-        -- Greater Invisibility:
+        -- Gas Greater Invisibility:
         and not FindAura("player", 110960, "HELPFUL")
-        -- Gas Cloud:
-        and not UnitChannelInfo("player")
         -- Does not have a pet summoned:
         and not petActive
         -- Has at least 1 pet in their Companions list:
