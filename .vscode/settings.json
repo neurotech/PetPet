@@ -5,7 +5,9 @@
     "InterfaceOptions_AddCategory",
     "BackdropTemplateMixin",
     "ToggleCollectionsJournal",
-    "Settings"
+    "Settings",
+    "WOW_PROJECT_ID",
+    "WOW_PROJECT_MAINLINE"
   ],
   "Lua.runtime.version": "Lua 5.1",
   "Lua.runtime.builtin": {
