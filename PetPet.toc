@@ -1,4 +1,4 @@
-## Interface: 110205, 11508, 20504, 30405, 40402, 50502
+## Interface: 110205, 11508, 20504, 30405, 40402, 50503
 ## X-Curse-Project-ID: 686613
 ## Title: |cffff8fe3P|r|cffff9ae6e|r|cffffa5e9t|r|cffffb1ebP|r|cffffbceee|r|cffffc7f1t|r
 ## Notes: Summon a random pet when you start moving.
@@ -9,5 +9,6 @@
 ## LoadOnDemand: 0
 ## SavedVariables: PetPetDB
 ## IconTexture: Interface\Icons\ability_rogue_rollthebones
+
 
 PetPet.lua
