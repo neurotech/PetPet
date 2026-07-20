@@ -58,6 +58,7 @@ local function InitialisePetPet()
         local favouritePets = {}
         local numPets, numOwned = C_PetJournal.GetNumPets()
         local petActive = HasActivePet(numPets) or C_PetJournal.GetSummonedPetGUID() ~= nil
+        local hasSecretAuras = C_Secrets.ShouldAurasBeSecret()
 
         -- Player is not:
         -- In combat:
@@ -68,12 +69,8 @@ local function InitialisePetPet()
             and not (UnitIsControlling("player") and UnitChannelInfo("player"))
             -- Stealthed / Dead
             and not IsStealthed() and not UnitIsGhost("player")
-            -- Camouflaged:
-            and not FindAura("player", 199483, "HELPFUL")
-            -- Has Invisibility:
-            and not FindAura("player", 32612, "HELPFUL")
-            -- Gas Greater Invisibility:
-            and not FindAura("player", 110960, "HELPFUL")
+            -- Has no secret auras:
+            and not hasSecretAuras
             -- Does not have a pet summoned:
             and not petActive
             -- Has at least 1 pet in their Companions list:
