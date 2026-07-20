@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WOW_DIR="$HOME/games/World of Warcraft"
+WOW_DIR="/mnt/c/Program Files (x86)/World of Warcraft"
 ADDON_NAME="PetPet"
 
 TARGETS=(
@@ -19,13 +19,13 @@ install_addon() {
     echo "Copying assets to $label..."
     mkdir -p "$dest"
     cp *.lua "$dest/"
-    cp PetPet.toc.tmp "$dest/$ADDON_NAME.toc"
+    cp $ADDON_NAME.toc.tmp "$dest/$ADDON_NAME.toc"
 }
 
 echo "Building $ADDON_NAME and installing to WoW directory."
 
 echo "Creating TOC file..."
-sed "s/@project-version@/$(git describe --abbrev=0)/g" PetPet.toc > PetPet.toc.tmp
+sed "s/@project-version@/$(git describe --abbrev=0)/g" $ADDON_NAME.toc > $ADDON_NAME.toc.tmp
 
 for target in "${TARGETS[@]}"; do
     client="${target%%:*}"
@@ -34,6 +34,6 @@ for target in "${TARGETS[@]}"; do
 done
 
 echo "Cleaning up..."
-rm PetPet.toc.tmp
+rm $ADDON_NAME.toc.tmp
 
 echo "Complete."
