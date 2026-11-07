@@ -5,6 +5,7 @@ ADDON_NAME="PetPet"
 
 TARGETS=(
     "_retail_:Retail"
+    "_forever_:Forever"
     # "_classic_:Classic"
     # "_classic_ptr_:Classic PTR"
     # "_xptr_:Retail PTR (xptr)"
