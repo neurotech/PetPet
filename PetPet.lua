@@ -55,6 +55,9 @@ local function InitialisePetPet()
     PetPetListener:RegisterEvent("PLAYER_STARTED_MOVING")
 
     PetPetListener:SetScript("OnEvent", function()
+        -- Addon switched off with /petpet off:
+        if not PetPetDB.enabled then return end
+            
         local favouritePets = {}
         local numPets, numOwned = C_PetJournal.GetNumPets()
         local petActive = HasActivePet(numPets) or C_PetJournal.GetSummonedPetGUID() ~= nil
@@ -92,6 +95,42 @@ local function InitialisePetPet()
     end)
 end
 
+local function DismissActivePet()
+    local guid = C_PetJournal.GetSummonedPetGUID and C_PetJournal.GetSummonedPetGUID()
+
+    if guid then
+        -- Summoning the pet that is already out dismisses it:
+        C_PetJournal.SummonPetByGUID(guid)
+    elseif DismissCompanion then
+        DismissCompanion("CRITTER")
+    end
+end
+
+local function PetPetPrint(msg)
+    print("|cff33ff99PetPet:|r " .. msg)
+end
+
+SLASH_PETPET1 = "/petpet"
+SlashCmdList["PETPET"] = function(input)
+    local cmd = strlower(strtrim(input or ""))
+
+    if type(PetPetDB) ~= "table" then
+        PetPetDB = {}
+    end
+
+    if cmd == "on" then
+        PetPetDB.enabled = true
+        PetPetPrint("|cff00ff00on|r - a random pet will be summoned when you start moving.")
+    elseif cmd == "off" then
+        PetPetDB.enabled = false
+        DismissActivePet()
+        PetPetPrint("|cffff0000off|r - pets will no longer be summoned automatically.")
+    else
+        local state = (PetPetDB.enabled ~= false) and "|cff00ff00on|r" or "|cffff0000off|r"
+        PetPetPrint("currently " .. state .. ". Use /petpet on or /petpet off.")
+    end
+end
+
 local loadingEvents = CreateFrame("Frame")
 loadingEvents:RegisterEvent("ADDON_LOADED")
 loadingEvents:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -100,10 +139,15 @@ loadingEvents:SetScript(
     "OnEvent",
     function(_, event, arg1)
         if event == "ADDON_LOADED" and arg1 == "PetPet" then
-            -- Clean up old config settings:
-            if PetPetDB ~= nil then
+            -- Initialise saved settings (enabled by default):
+            if type(PetPetDB) ~= "table" then
                 PetPetDB = {}
             end
+
+            if PetPetDB.enabled == nil then
+                PetPetDB.enabled = true
+            end
+
 
             loadingEvents:UnregisterEvent("ADDON_LOADED")
         end
